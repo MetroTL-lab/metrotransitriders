@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "start": "tsx server/index.ts"
   },
+  "// note": "server/index.ts + /api/apply-rider are now unused for submission (see RiderApplicationPage.tsx, which posts straight to the submit-rider-application Supabase edge function) — left in place in case you want a non-Supabase fallback later.",
   "dependencies": {
     "express": "^5.1.0",
     "lucide-react": "^0.468.0",

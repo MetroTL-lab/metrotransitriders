@@ -15,6 +15,7 @@ import {
   FileText,
   AlertCircle
 } from 'lucide-react';
+import { SUPABASE_FUNCTIONS_URL, SUPABASE_ANON_KEY } from './supabaseConfig';
 
 interface RiderApplicationPageProps {
   onBackToHome: () => void;
@@ -46,9 +47,19 @@ export const RiderApplicationPage: React.FC<RiderApplicationPageProps> = ({ onBa
     setErrorMessage('');
 
     try {
-      const res = await fetch('/api/apply-rider', {
+      // Posts straight to the submit-rider-application Supabase edge
+      // function (public, phone-matched — see that function's own
+      // header comment) instead of this site's local Express server.
+      // The apikey header is required by the Supabase functions
+      // gateway even for a --no-verify-jwt function; there's no user
+      // session involved here at all.
+      const res = await fetch(`${SUPABASE_FUNCTIONS_URL}/submit-rider-application`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          apikey: SUPABASE_ANON_KEY,
+          Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+        },
         body: JSON.stringify(formData),
       });
 
